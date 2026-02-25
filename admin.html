@@ -192,6 +192,117 @@
     justify-content: center;
   }
 }
+/* ============================================
+   MANAGE POSTS — MOBILE RESPONSIVE
+   Paste at the bottom of your style.css
+============================================ */
+
+/* Filter bar stacks on mobile */
+@media (max-width: 768px) {
+  .posts-filter-bar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+  .posts-filter-bar .filter-select,
+  .posts-filter-bar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Card layout for table on mobile ── */
+@media (max-width: 640px) {
+
+  /* Hide the table header */
+  .posts-table thead {
+    display: none;
+  }
+
+  /* Make table block */
+  .posts-table,
+  .posts-table tbody,
+  .posts-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Each row = a card */
+  .posts-table tbody tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 0 0 10px 0;
+    padding: 14px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .posts-table tbody tr:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+
+  /* Each cell: label + value side by side */
+  .posts-table td {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 13px;
+    border: none;
+    background: none;
+    white-space: normal;
+  }
+
+  /* Auto label from data-label attribute */
+  .posts-table td[data-label]::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    min-width: 76px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  /* Title — bigger, no label */
+  .posts-table td:first-child {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .posts-table td:first-child::before {
+    display: none;
+  }
+
+  /* Actions row — buttons go full width side by side */
+  .posts-table td:last-child {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    flex-direction: row;
+    gap: 8px;
+  }
+  .posts-table td:last-child::before {
+    display: none;
+  }
+  .posts-table td:last-child .btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  /* Disable horizontal scroll on mobile */
+  .posts-table-wrap > div[style*="overflow-x"] {
+    overflow-x: visible !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -700,6 +811,33 @@
   window.loadManagePostsPublic = () => {
     document.getElementById('manage-filter')?.dispatchEvent(new Event('change'));
   };
+
+  /**
+ * AUTO DATA-LABEL FOR MOBILE TABLE CARDS
+ * 
+ * Paste this INSIDE the <script type="module"> in admin.html,
+ * BEFORE the `import './js/admin.js'` line.
+ * 
+ * It watches the tbody for changes and automatically adds
+ * data-label attributes to each <td> based on the <thead> columns,
+ * so the CSS card layout can show "Type", "Company" etc as labels.
+ */
+
+function labelTableRows(table) {
+  const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+  table.querySelectorAll('tbody tr').forEach(row => {
+    row.querySelectorAll('td').forEach((td, i) => {
+      if (headers[i]) td.setAttribute('data-label', headers[i]);
+    });
+  });
+}
+
+// Run whenever rows are added to tbody (admin.js loads them dynamically)
+const postsTable = document.querySelector('.posts-table');
+if (postsTable) {
+  const observer = new MutationObserver(() => labelTableRows(postsTable));
+  observer.observe(postsTable.querySelector('tbody'), { childList: true, subtree: true });
+}
 </script>
 </body>
 </html>
