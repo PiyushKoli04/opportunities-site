@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opportunities — Syntax Syndicate</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+      Syntax Syndicate
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><i class="bi bi-house"></i> Home</a></li>
+      <li class="nav-item">
+        <a class="nav-link active" href="opportunities.html">
+          <i class="bi bi-grid-3x3-gap"></i> Opportunities
+          <i class="bi bi-chevron-down"></i>
+        </a>
+        <div class="dropdown-mega">
+          <div class="dropdown-label">Browse by Category</div>
+          <div class="dropdown-grid">
+            <a class="dropdown-item" href="opportunities.html?cat=jobs">
+              <div class="dropdown-icon" style="background:rgba(124,111,255,0.12)"><i class="bi bi-briefcase-fill" style="color:#a89fff"></i></div>
+              <div class="dropdown-text"><strong>Jobs</strong><span>Full-time roles</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=internships">
+              <div class="dropdown-icon" style="background:rgba(61,214,200,0.1)"><i class="bi bi-mortarboard-fill" style="color:#3dd6c8"></i></div>
+              <div class="dropdown-text"><strong>Internships</strong><span>Get experience</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=hackathons">
+              <div class="dropdown-icon" style="background:rgba(255,107,138,0.1)"><i class="bi bi-lightning-fill" style="color:#ff8fa8"></i></div>
+              <div class="dropdown-text"><strong>Hackathons</strong><span>Build & compete</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=techEvents">
+              <div class="dropdown-icon" style="background:rgba(245,197,66,0.1)"><i class="bi bi-cpu-fill" style="color:#f5c542"></i></div>
+              <div class="dropdown-text"><strong>Tech Events</strong><span>Industry meetups</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=seminars">
+              <div class="dropdown-icon" style="background:rgba(61,232,160,0.1)"><i class="bi bi-mic-fill" style="color:#3de8a0"></i></div>
+              <div class="dropdown-text"><strong>Seminars</strong><span>Learn from experts</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html">
+              <div class="dropdown-icon" style="background:rgba(255,255,255,0.05)"><i class="bi bi-search" style="color:var(--text2)"></i></div>
+              <div class="dropdown-text"><strong>Browse All</strong><span>All categories</span></div>
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="nav-auth" id="nav-auth-container">
+      <a href="login.html" class="btn btn-ghost">Login</a>
+      <a href="signup.html" class="btn btn-primary"><i class="bi bi-person-plus"></i> Sign Up</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" class="mobile-nav-link"><i class="bi bi-house"></i> Home</a></li>
+    <li><a href="opportunities.html" class="mobile-nav-link"><i class="bi bi-grid-3x3-gap"></i> All Opportunities</a></li>
+    <li>
+      <div class="mobile-subitems">
+        <a href="opportunities.html?cat=jobs" class="mobile-subitem">💼 Jobs</a>
+        <a href="opportunities.html?cat=internships" class="mobile-subitem">🎓 Internships</a>
+        <a href="opportunities.html?cat=hackathons" class="mobile-subitem">⚡ Hackathons</a>
+        <a href="opportunities.html?cat=techEvents" class="mobile-subitem">🛠 Tech Events</a>
+        <a href="opportunities.html?cat=seminars" class="mobile-subitem">🎤 Seminars</a>
+      </div>
+    </li>
+  </ul>
+  <div class="mobile-nav-auth" id="mobile-auth-container">
+    <!-- Populated by initNavbarAuth() -->
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="opp-page">
+  <div class="opp-header">
+    <div class="opp-header-inner">
+      <div class="opp-title-row">
+        <div>
+          <h1>Opportunities</h1>
+          <p>Discover jobs, internships, hackathons, events and seminars</p>
+        </div>
+        <span id="result-count" style="font-size:13px;color:var(--text3)">Loading...</span>
+      </div>
+
+      <!-- TABS -->
+      <div class="opp-tabs" id="opp-tabs">
+        <button class="opp-tab active" data-cat="all">
+          <i class="bi bi-grid-3x3-gap"></i> All
+          <span class="opp-tab-count" id="tab-count-all">0</span>
+        </button>
+        <button class="opp-tab" data-cat="jobs">
+          <i class="bi bi-briefcase"></i> Jobs
+          <span class="opp-tab-count" id="tab-count-jobs">0</span>
+        </button>
+        <button class="opp-tab" data-cat="internships">
+          <i class="bi bi-mortarboard"></i> Internships
+          <span class="opp-tab-count" id="tab-count-internships">0</span>
+        </button>
+        <button class="opp-tab" data-cat="hackathons">
+          <i class="bi bi-lightning"></i> Hackathons
+          <span class="opp-tab-count" id="tab-count-hackathons">0</span>
+        </button>
+        <button class="opp-tab" data-cat="techEvents">
+          <i class="bi bi-cpu"></i> Tech Events
+          <span class="opp-tab-count" id="tab-count-techEvents">0</span>
+        </button>
+        <button class="opp-tab" data-cat="seminars">
+          <i class="bi bi-mic"></i> Seminars
+          <span class="opp-tab-count" id="tab-count-seminars">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" id="search-input" placeholder="Search by title, company, keyword...">
+      </div>
+      <select class="filter-select" id="loc-filter">
+        <option value="">All Locations</option>
+        <option value="remote">Remote</option>
+        <option value="bangalore">Bangalore</option>
+        <option value="mumbai">Mumbai</option>
+        <option value="delhi">Delhi</option>
+        <option value="hyderabad">Hyderabad</option>
+        <option value="pune">Pune</option>
+        <option value="online">Online</option>
+      </select>
+      <select class="filter-select" id="exp-filter">
+        <option value="">All Levels</option>
+        <option value="Entry Level">Entry Level</option>
+        <option value="Junior">Junior</option>
+        <option value="Mid Level">Mid Level</option>
+        <option value="Senior">Senior</option>
+        <option value="Lead">Lead</option>
+      </select>
+      <select class="filter-select" id="time-filter">
+        <option value="all">All Time</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+      <div class="filter-bar-right">
+        <span class="result-count" id="filter-count"></span>
+        <button class="btn btn-secondary btn-sm" id="clear-filters">
+          <i class="bi bi-x-circle"></i> Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="opp-content">
+    <!-- Top Ad Banner -->
+    <div id="ad-banner" class="ad-banner hidden"></div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2025 Syntax Syndicate. All rights reserved.</p>
+      <a href="index.html" style="font-size:12px;color:var(--text3)">← Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+
+<script type="module">
+  import { db, COLLECTIONS } from './js/firebase.js';
+  import { initNavbarAuth, showToast, timeAgo, truncate, CATEGORY_CONFIG } from './js/auth.js';
+  import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  initNavbarAuth();
+
+  // Navbar scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+  document.getElementById('nav-toggle')?.addEventListener('click', () => document.getElementById('mobile-menu')?.classList.toggle('open'));
+
+  // State
+  let allPosts = [], filteredPosts = [], topAds = [], inlineAds = [];
+  const state = { cat: 'all', search: '', location: '', experience: '', time: 'all' };
+
+  // DOM
+  const grid = document.getElementById('cards-grid');
+  const adBanner = document.getElementById('ad-banner');
+
+  // Init
+  async function init() {
+    showSkeletons();
+    const params = new URLSearchParams(location.search);
+    const cat = params.get('cat');
+    if (cat) {
+      state.cat = cat;
+      document.querySelectorAll('.opp-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.cat === cat);
+      });
+    }
+    await Promise.all([fetchAll(), fetchAds()]);
+    renderTopAd();
+    updateTabCounts();
+    applyFilters();
+  }
+
+  async function fetchAll() {
+    const cols = Object.values(COLLECTIONS).filter(c => c !== 'ss_users' && c !== 'ss_ads');
+    const results = await Promise.all(cols.map(fetchCol));
+    allPosts = results.flat().sort((a, b) => {
+      const at = a.postedAt?.toDate?.() || new Date(0);
+      const bt = b.postedAt?.toDate?.() || new Date(0);
+      return bt - at;
+    });
+  }
+
+  async function fetchCol(col) {
+    try {
+      const snap = await getDocs(query(collection(db, col), orderBy('postedAt', 'desc')));
+      // Strip ss_ prefix for display
+      const displayCol = col.replace('ss_', '');
+      return snap.docs.map(d => ({ id: d.id, _col: displayCol, _colRaw: col, ...d.data() }));
+    } catch { return []; }
+  }
+
+  async function fetchAds() {
+    try {
+      const snap = await getDocs(collection(db, COLLECTIONS.ADS));
+      const ads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      topAds = ads.filter(a => a.placement === 'top');
+      inlineAds = ads.filter(a => a.placement === 'betweenCards');
+    } catch { topAds = []; inlineAds = []; }
+  }
+
+  function updateTabCounts() {
+    const counts = { all: allPosts.length };
+    allPosts.forEach(p => { counts[p._col] = (counts[p._col] || 0) + 1; });
+    Object.entries(counts).forEach(([k, v]) => {
+      const el = document.getElementById(`tab-count-${k}`);
+      if (el) el.textContent = v;
+    });
+  }
+
+  function renderTopAd() {
+    if (!topAds.length) { adBanner.classList.add('hidden'); return; }
+    const ad = topAds[0];
+    adBanner.classList.remove('hidden');
+    adBanner.onclick = () => window.open(ad.redirectLink, '_blank');
+    adBanner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;flex:1">
+        ${ad.imagePath ? `<img src="${ad.imagePath}" style="width:52px;height:52px;border-radius:9px;object-fit:cover" alt="${ad.title}">` : `<div style="width:52px;height:52px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center"><i class="bi bi-megaphone-fill" style="color:var(--accent);font-size:20px"></i></div>`}
+        <div>
+          <div style="font-family:var(--font-display);font-weight:600;margin-bottom:3px">${ad.title}</div>
+          <div style="font-size:12px;color:var(--text3)">Sponsored · Click to learn more</div>
+        </div>
+      </div>
+      <span class="btn btn-secondary btn-sm">Learn More <i class="bi bi-arrow-right"></i></span>
+    `;
+  }
+
+  function applyFilters() {
+    const now = new Date();
+    filteredPosts = allPosts.filter(p => {
+      if (state.cat !== 'all' && p._col !== state.cat) return false;
+      if (state.search) {
+        const s = state.search.toLowerCase();
+        if (!`${p.title} ${p.company} ${p.organizer} ${p.description}`.toLowerCase().includes(s)) return false;
+      }
+      if (state.location) {
+        const loc = `${p.location} ${p.venue}`.toLowerCase();
+        if (!loc.includes(state.location.toLowerCase())) return false;
+      }
+      if (state.experience && p.experienceLevel && p.experienceLevel !== state.experience) return false;
+      if (state.time !== 'all' && p.postedAt) {
+        const d = p.postedAt.toDate ? p.postedAt.toDate() : new Date(p.postedAt);
+        const diff = (now - d) / 86400000;
+        if (state.time === 'week' && diff > 7) return false;
+        if (state.time === 'month' && diff > 30) return false;
+      }
+      return true;
+    });
+    renderCards();
+    document.getElementById('result-count').textContent = `${filteredPosts.length} result${filteredPosts.length !== 1 ? 's' : ''}`;
+    document.getElementById('filter-count').textContent = `${filteredPosts.length} found`;
+  }
+
+  function renderCards() {
+    grid.innerHTML = '';
+    if (!filteredPosts.length) {
+      grid.innerHTML = `<div class="empty-state"><i class="bi bi-search"></i><h3>No Results Found</h3><p>Try adjusting your filters or search query</p></div>`;
+      return;
+    }
+    filteredPosts.forEach((post, i) => {
+      if (i > 0 && i % 4 === 0 && inlineAds.length) {
+        grid.appendChild(makeAdCard(inlineAds[(Math.floor(i/4)-1) % inlineAds.length]));
+      }
+      grid.appendChild(makeCard(post));
+    });
+  }
+
+  const CAT_CONFIG = {
+    jobs: { icon: 'bi-briefcase-fill', label: 'Job', badge: 'badge-jobs', emoji: '🏢' },
+    internships: { icon: 'bi-mortarboard-fill', label: 'Internship', badge: 'badge-internships', emoji: '📚' },
+    hackathons: { icon: 'bi-lightning-fill', label: 'Hackathon', badge: 'badge-hackathons', emoji: '⚡' },
+    techEvents: { icon: 'bi-cpu-fill', label: 'Tech Event', badge: 'badge-techEvents', emoji: '💡' },
+    seminars: { icon: 'bi-mic-fill', label: 'Seminar', badge: 'badge-seminars', emoji: '🎤' },
+  };
+
+  function makeCard(post) {
+    const cfg = CAT_CONFIG[post._col] || { icon: 'bi-file-text', label: post._col, badge: '', emoji: '📄' };
+    const company = post.company || post.organizer || 'Syntax Syndicate';
+    const location = post.location || post.venue || (post.mode === 'Online' ? 'Online' : '');
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-img">
+        ${post.imagePath
+          ? `<img src="${post.imagePath}" alt="${post.title}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=font-size:36px>${cfg.emoji}</span>'">`
+          : `<span style="font-size:36px">${cfg.emoji}</span>`}
+      </div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="badge ${cfg.badge}"><i class="bi ${cfg.icon}"></i> ${cfg.label}</span>
+          <span class="card-time">${timeAgo(post.postedAt)}</span>
+        </div>
+        <div class="card-title">${post.title || 'Untitled'}</div>
+        <div class="card-company"><i class="bi bi-building"></i> ${company}</div>
+        <div class="card-tags">
+          ${location ? `<span class="card-tag"><i class="bi bi-geo-alt"></i> ${location}</span>` : ''}
+          ${post.experienceLevel ? `<span class="card-tag"><i class="bi bi-bar-chart"></i> ${post.experienceLevel}</span>` : ''}
+          ${post.duration ? `<span class="card-tag"><i class="bi bi-clock"></i> ${post.duration}</span>` : ''}
+          ${post.prizePool ? `<span class="card-tag"><i class="bi bi-trophy"></i> ${post.prizePool}</span>` : ''}
+          ${post.mode ? `<span class="card-tag"><i class="bi bi-globe"></i> ${post.mode}</span>` : ''}
+        </div>
+        <div class="card-desc">${truncate(post.description, 110)}</div>
+      </div>
+      <div class="card-footer">
+        <span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">${post._col}</span>
+        <a href="apply.html?id=${post.id}&type=${post._colRaw}" class="btn btn-primary btn-sm">View Details <i class="bi bi-arrow-right"></i></a>
+      </div>
+    `;
+    return div;
+  }
+
+  function makeAdCard(ad) {
+    const div = document.createElement('div');
+    div.className = 'ad-card';
+    div.onclick = () => window.open(ad.redirectLink, '_blank');
+    div.innerHTML = `
+      <div style="width:60px;height:60px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center">
+        ${ad.imagePath ? `<img src="${ad.imagePath}" style="width:100%;height:100%;object-fit:cover">` : `<i class="bi bi-megaphone-fill" style="font-size:22px;color:var(--accent)"></i>`}
+      </div>
+      <div>
+        <div style="font-family:var(--font-display);font-weight:600;margin-bottom:4px">${ad.title}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Sponsored</div>
+        <span class="btn btn-secondary btn-sm">Learn More <i class="bi bi-arrow-right"></i></span>
+      </div>
+    `;
+    return div;
+  }
+
+  function showSkeletons() {
+    grid.innerHTML = Array(6).fill(`
+      <div class="skeleton">
+        <div class="skel-img"></div>
+        <div class="skel-body">
+          <div class="skel-line xs"></div>
+          <div class="skel-line"></div>
+          <div class="skel-line s"></div>
+          <div class="skel-line"></div>
+          <div class="skel-line s"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Tab clicks
+  document.getElementById('opp-tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.opp-tab');
+    if (!tab) return;
+    document.querySelectorAll('.opp-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    state.cat = tab.dataset.cat;
+    applyFilters();
+    // Update URL without reload
+    const url = new URL(location.href);
+    if (state.cat === 'all') url.searchParams.delete('cat');
+    else url.searchParams.set('cat', state.cat);
+    history.replaceState({}, '', url);
+  });
+
+  // Filter events
+  document.getElementById('search-input').addEventListener('input', e => { state.search = e.target.value.trim(); applyFilters(); });
+  document.getElementById('loc-filter').addEventListener('change', e => { state.location = e.target.value; applyFilters(); });
+  document.getElementById('exp-filter').addEventListener('change', e => { state.experience = e.target.value; applyFilters(); });
+  document.getElementById('time-filter').addEventListener('change', e => { state.time = e.target.value; applyFilters(); });
+  document.getElementById('clear-filters').addEventListener('click', () => {
+    state.search = ''; state.location = ''; state.experience = ''; state.time = 'all';
+    document.getElementById('search-input').value = '';
+    document.getElementById('loc-filter').value = '';
+    document.getElementById('exp-filter').value = '';
+    document.getElementById('time-filter').value = 'all';
+    applyFilters();
+  });
+
+  init();
+</script>
+</body>
+</html>

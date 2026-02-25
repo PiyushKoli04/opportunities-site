@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Details — Syntax Syndicate</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      Syntax Syndicate
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="opportunities.html" class="nav-link">Opportunities</a></li>
+    </ul>
+    <div class="nav-auth" id="nav-auth-container">
+      <a href="login.html" class="btn btn-ghost">Login</a>
+      <a href="signup.html" class="btn btn-primary">Sign Up</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" class="mobile-nav-link">🏠 Home</a></li>
+    <li><a href="opportunities.html" class="mobile-nav-link">🔍 Opportunities</a></li>
+  </ul>
+  <div class="mobile-nav-auth" id="mobile-auth-container">
+    <!-- Populated by initNavbarAuth() in auth.js -->
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="detail-page">
+  <div class="container">
+    <a href="javascript:history.back()" class="detail-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+      Back to Opportunities
+    </a>
+
+    <!-- LOADING STATE -->
+    <div id="loading-state" style="text-align:center;padding:80px 0">
+      <div style="font-size:48px;margin-bottom:16px">⏳</div>
+      <p style="color:var(--text-muted)">Loading details...</p>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="error-state" style="display:none;text-align:center;padding:80px 0">
+      <div style="font-size:48px;margin-bottom:16px">❌</div>
+      <h3 style="color:var(--text-secondary);margin-bottom:8px">Post Not Found</h3>
+      <p style="color:var(--text-muted);margin-bottom:24px">The post you're looking for doesn't exist or has been removed.</p>
+      <a href="index.html" class="btn btn-primary">← Browse Opportunities</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="detail-content" style="display:none" class="detail-grid">
+      <!-- LEFT MAIN -->
+      <div class="detail-main">
+        <div class="detail-hero" id="detail-hero">
+          <!-- Image or emoji placeholder -->
+        </div>
+
+        <div class="detail-body">
+          <div class="detail-header">
+            <div class="detail-badge-row" id="detail-badges">
+              <!-- Badges populated by JS -->
+            </div>
+            <h1 class="detail-title" id="detail-title">—</h1>
+            <div class="detail-company" id="detail-company">—</div>
+
+            <div class="detail-meta-row" id="detail-meta">
+              <!-- Meta items populated by JS -->
+            </div>
+          </div>
+
+          <div class="detail-section" id="detail-desc-section">
+            <h3>About this Opportunity</h3>
+            <p id="detail-description">—</p>
+          </div>
+
+          <div class="detail-section" id="detail-req-section" style="display:none">
+            <h3>Requirements</h3>
+            <div id="detail-requirements"></div>
+          </div>
+
+          <div class="detail-section" id="detail-ben-section" style="display:none">
+            <h3>Benefits</h3>
+            <div id="detail-benefits"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div>
+        <div class="detail-sidebar-card">
+          <h3>Quick Info</h3>
+          <div class="detail-sidebar-info" id="detail-sidebar-info">
+            <!-- Populated by JS -->
+          </div>
+          <a href="#" id="apply-btn" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full btn-lg">
+            Apply Now →
+          </a>
+          <div style="margin-top:12px;text-align:center;font-size:12px;color:var(--text-muted)">
+            Opens application in a new tab
+          </div>
+          <div class="divider"></div>
+          <a href="index.html" class="btn btn-secondary btn-full">← More Opportunities</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer" style="margin-top:40px">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2025 Syntax Syndicate. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+
+<script type="module">
+  import { db } from './js/firebase.js';
+  import { initNavbarAuth, requireAuth, showToast, formatDate, timeAgo, CATEGORY_CONFIG } from './js/auth.js';
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  initNavbarAuth();
+
+  // Navbar scroll
+  const nav = document.querySelector('.navbar');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+  // Mobile menu toggle
+  document.getElementById('nav-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('open');
+  });
+
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobile-menu')?.classList.remove('open');
+    });
+  });
+
+  // Get URL params
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const type = params.get('type');
+
+  if (!id || !type) {
+    showError();
+  } else {
+    loadPost(id, type);
+  }
+
+  async function loadPost(id, col) {
+    try {
+      const snap = await getDoc(doc(db, col, id));
+      if (!snap.exists()) return showError();
+
+      const data = { id: snap.id, _collection: col, ...snap.data() };
+      renderPost(data);
+    } catch (err) {
+      console.error(err);
+      showError();
+    }
+  }
+
+  function renderPost(post) {
+    const config = CATEGORY_CONFIG[post._collection] || { icon: '📄', label: post._collection, badgeClass: '', emoji: '📄' };
+    const company = post.company || post.organizer || 'Syntax Syndicate';
+    const location = post.location || post.venue || '';
+
+    // Document title
+    document.title = `${post.title} — Syntax Syndicate`;
+
+    // Hero image
+    const heroEl = document.getElementById('detail-hero');
+    if (post.imagePath) {
+      heroEl.innerHTML = `<img src="${post.imagePath}" alt="${post.title}" onerror="this.parentElement.innerHTML='<span style=font-size:72px>${config.emoji}</span>'">`;
+    } else {
+      heroEl.innerHTML = `<span style="font-size:72px">${config.emoji}</span>`;
+    }
+
+    // Badges
+    document.getElementById('detail-badges').innerHTML = `
+      <span class="card-badge ${config.badgeClass}">${config.icon} ${config.label}</span>
+      <span style="font-size:13px;color:var(--text-muted)">${timeAgo(post.postedAt)}</span>
+    `;
+
+    // Title & company
+    document.getElementById('detail-title').textContent = post.title || 'Untitled';
+    document.getElementById('detail-company').textContent = company;
+
+    // Meta row
+    const metas = [];
+    if (location) metas.push({ icon: '📍', label: location });
+    if (post.experienceLevel) metas.push({ icon: '📊', label: post.experienceLevel });
+    if (post.duration) metas.push({ icon: '⏱', label: post.duration });
+    if (post.mode) metas.push({ icon: '🌐', label: post.mode });
+    if (post.prizePool) metas.push({ icon: '🏆', label: `Prize: ${post.prizePool}` });
+    if (post.deadline) metas.push({ icon: '📅', label: `Deadline: ${post.deadline}` });
+    if (post.eventDate) metas.push({ icon: '📅', label: `Date: ${post.eventDate}` });
+    if (post.speaker) metas.push({ icon: '🎤', label: `Speaker: ${post.speaker}` });
+
+    document.getElementById('detail-meta').innerHTML = metas.map(m =>
+      `<div class="detail-meta-item">${m.icon} <span>${m.label}</span></div>`
+    ).join('');
+
+    // Description
+    if (post.description) {
+      document.getElementById('detail-description').textContent = post.description;
+    } else {
+      document.getElementById('detail-desc-section').style.display = 'none';
+    }
+
+    // Requirements
+    if (post.requirements) {
+      document.getElementById('detail-req-section').style.display = 'block';
+      document.getElementById('detail-requirements').innerHTML = formatTextToList(post.requirements);
+    }
+
+    // Benefits
+    if (post.benefits) {
+      document.getElementById('detail-ben-section').style.display = 'block';
+      document.getElementById('detail-benefits').innerHTML = formatTextToList(post.benefits);
+    }
+
+    // Sidebar info
+    const sidebarItems = [];
+    sidebarItems.push(['Type', `${config.icon} ${config.label}`]);
+    if (company) sidebarItems.push(['Company / Organizer', company]);
+    if (location) sidebarItems.push(['Location', location]);
+    if (post.experienceLevel) sidebarItems.push(['Experience', post.experienceLevel]);
+    if (post.duration) sidebarItems.push(['Duration', post.duration]);
+    if (post.prizePool) sidebarItems.push(['Prize Pool', post.prizePool]);
+    if (post.mode) sidebarItems.push(['Mode', post.mode]);
+    if (post.deadline) sidebarItems.push(['Deadline', post.deadline]);
+    if (post.eventDate) sidebarItems.push(['Event Date', post.eventDate]);
+    if (post.speaker) sidebarItems.push(['Speaker', post.speaker]);
+    sidebarItems.push(['Posted', formatDate(post.postedAt)]);
+
+    document.getElementById('detail-sidebar-info').innerHTML = sidebarItems.map(([k, v]) =>
+      `<div class="sidebar-info-item">
+        <span>${k}</span>
+        <span>${v}</span>
+      </div>`
+    ).join('');
+
+    // Apply button — requires login
+    const applyBtn = document.getElementById('apply-btn');
+    if (post.applyLink) {
+      const btnLabel = post._collection === 'hackathons' || post._collection === 'techEvents' || post._collection === 'seminars'
+        ? 'Register Now →'
+        : 'Apply Now →';
+      applyBtn.textContent = btnLabel;
+      applyBtn.removeAttribute('href');
+      applyBtn.style.cursor = 'pointer';
+      applyBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await requireAuth(`login.html?redirect=${encodeURIComponent(location.href)}`);
+          window.open(post.applyLink, '_blank', 'noopener,noreferrer');
+        } catch {
+          // requireAuth already redirected to login
+        }
+      });
+    } else {
+      applyBtn.style.display = 'none';
+    }
+
+    // Show content
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('detail-content').style.display = 'grid';
+  }
+
+  function formatTextToList(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    if (lines.length <= 1) return `<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">${text}</p>`;
+    return `<ul>${lines.map(l => `<li>${l.replace(/^[-•*]\s*/, '')}</li>`).join('')}</ul>`;
+  }
+
+  function showError() {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('error-state').style.display = 'block';
+  }
+</script>
+</body>
+</html>

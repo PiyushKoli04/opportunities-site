@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syntax Syndicate — Your Career Launchpad</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+      Syntax Syndicate
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link active"><i class="bi bi-house"></i> Home</a></li>
+      <li class="nav-item">
+        <a class="nav-link" href="opportunities.html">
+          <i class="bi bi-grid-3x3-gap"></i> Opportunities
+          <i class="bi bi-chevron-down"></i>
+        </a>
+        <div class="dropdown-mega">
+          <div class="dropdown-label">Browse by Category</div>
+          <div class="dropdown-grid">
+            <a class="dropdown-item" href="opportunities.html?cat=jobs">
+              <div class="dropdown-icon" style="background:rgba(124,111,255,0.12)"><i class="bi bi-briefcase-fill" style="color:#a89fff"></i></div>
+              <div class="dropdown-text"><strong>Jobs</strong><span>Full-time roles</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=internships">
+              <div class="dropdown-icon" style="background:rgba(61,214,200,0.1)"><i class="bi bi-mortarboard-fill" style="color:#3dd6c8"></i></div>
+              <div class="dropdown-text"><strong>Internships</strong><span>Get experience</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=hackathons">
+              <div class="dropdown-icon" style="background:rgba(255,107,138,0.1)"><i class="bi bi-lightning-fill" style="color:#ff8fa8"></i></div>
+              <div class="dropdown-text"><strong>Hackathons</strong><span>Build & compete</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=techEvents">
+              <div class="dropdown-icon" style="background:rgba(245,197,66,0.1)"><i class="bi bi-cpu-fill" style="color:#f5c542"></i></div>
+              <div class="dropdown-text"><strong>Tech Events</strong><span>Industry meetups</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html?cat=seminars">
+              <div class="dropdown-icon" style="background:rgba(61,232,160,0.1)"><i class="bi bi-mic-fill" style="color:#3de8a0"></i></div>
+              <div class="dropdown-text"><strong>Seminars</strong><span>Learn from experts</span></div>
+            </a>
+            <a class="dropdown-item" href="opportunities.html">
+              <div class="dropdown-icon" style="background:rgba(255,255,255,0.05)"><i class="bi bi-search" style="color:var(--text2)"></i></div>
+              <div class="dropdown-text"><strong>Browse All</strong><span>All categories</span></div>
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="nav-auth" id="nav-auth-container">
+      <a href="login.html" class="btn btn-ghost">Login</a>
+      <a href="signup.html" class="btn btn-primary"><i class="bi bi-person-plus"></i> Sign Up</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" class="mobile-nav-link"><i class="bi bi-house me-2"></i> Home</a></li>
+    <li>
+      <div class="mobile-nav-link"><i class="bi bi-grid-3x3-gap me-2"></i> Opportunities</div>
+      <div class="mobile-subitems">
+        <a href="opportunities.html?cat=jobs" class="mobile-subitem"><i class="bi bi-briefcase me-1"></i> Jobs</a>
+        <a href="opportunities.html?cat=internships" class="mobile-subitem"><i class="bi bi-mortarboard me-1"></i> Internships</a>
+        <a href="opportunities.html?cat=hackathons" class="mobile-subitem"><i class="bi bi-lightning me-1"></i> Hackathons</a>
+        <a href="opportunities.html?cat=techEvents" class="mobile-subitem"><i class="bi bi-cpu me-1"></i> Tech Events</a>
+        <a href="opportunities.html?cat=seminars" class="mobile-subitem"><i class="bi bi-mic me-1"></i> Seminars</a>
+      </div>
+    </li>
+  </ul>
+  <div class="mobile-nav-auth" id="mobile-auth-container">
+    <!-- Populated by initNavbarAuth() -->
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb-1"></div>
+  <div class="hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Your Career Launchpad
+    </div>
+    <h1 class="hero-title">
+      Find Your Next<br>
+      <span class="accent">Big Opportunity</span><br>
+      <span class="line2">in Tech</span>
+    </h1>
+    <p class="hero-desc">
+      Curated jobs, internships, hackathons, tech events, and seminars — all in one sleek platform built for developers.
+    </p>
+    <div class="hero-cta">
+      <a href="opportunities.html" class="btn btn-primary btn-xl">
+        <i class="bi bi-search"></i> Explore Opportunities
+      </a>
+      <a href="signup.html" class="btn btn-outline btn-xl">
+        <i class="bi bi-person-plus"></i> Join Free
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong id="stat-jobs">—</strong>
+        <span>Open Jobs</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <strong id="stat-internships">—</strong>
+        <span>Internships</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <strong id="stat-events">—</strong>
+        <span>Events & Hackathons</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(124,111,255,0.12)"><i class="bi bi-lightning-charge-fill" style="color:var(--accent)"></i></div>
+        <h3>Real-time Updates</h3>
+        <p>Fresh opportunities posted daily by verified companies and organizers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(61,214,200,0.1)"><i class="bi bi-funnel-fill" style="color:var(--cyan)"></i></div>
+        <h3>Smart Filters</h3>
+        <p>Filter by role, location, experience level, and time — find what fits you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(245,197,66,0.1)"><i class="bi bi-shield-check-fill" style="color:var(--yellow)"></i></div>
+        <h3>Verified Listings</h3>
+        <p>All posts are manually reviewed by our admin team before going live.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(61,232,160,0.1)"><i class="bi bi-arrow-right-circle-fill" style="color:var(--green)"></i></div>
+        <h3>One-click Apply</h3>
+        <p>Direct apply links — no middlemen, no friction, just click and apply.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <div class="section-eyebrow">Browse by Category</div>
+    <h2 class="section-title">Everything <span class="accent">In One Place</span></h2>
+    <p class="section-subtitle">From full-time jobs to weekend hackathons — we've got every opportunity type covered.</p>
+
+    <div class="cats-grid">
+      <a href="opportunities.html?cat=jobs" class="cat-card" style="--card-color:rgba(124,111,255,0.08)">
+        <div class="cat-icon"><i class="bi bi-briefcase-fill" style="color:#a89fff"></i></div>
+        <h3>Jobs</h3>
+        <p>Full-time positions</p>
+        <span class="cat-count" id="cc-jobs">Loading...</span>
+      </a>
+      <a href="opportunities.html?cat=internships" class="cat-card" style="--card-color:rgba(61,214,200,0.06)">
+        <div class="cat-icon"><i class="bi bi-mortarboard-fill" style="color:#3dd6c8"></i></div>
+        <h3>Internships</h3>
+        <p>Gain real experience</p>
+        <span class="cat-count" id="cc-internships">Loading...</span>
+      </a>
+      <a href="opportunities.html?cat=hackathons" class="cat-card" style="--card-color:rgba(255,107,138,0.06)">
+        <div class="cat-icon"><i class="bi bi-lightning-fill" style="color:#ff8fa8"></i></div>
+        <h3>Hackathons</h3>
+        <p>Build & compete</p>
+        <span class="cat-count" id="cc-hackathons">Loading...</span>
+      </a>
+      <a href="opportunities.html?cat=techEvents" class="cat-card" style="--card-color:rgba(245,197,66,0.06)">
+        <div class="cat-icon"><i class="bi bi-cpu-fill" style="color:#f5c542"></i></div>
+        <h3>Tech Events</h3>
+        <p>Industry meetups</p>
+        <span class="cat-count" id="cc-techevents">Loading...</span>
+      </a>
+      <a href="opportunities.html?cat=seminars" class="cat-card" style="--card-color:rgba(61,232,160,0.06)">
+        <div class="cat-icon"><i class="bi bi-mic-fill" style="color:#3de8a0"></i></div>
+        <h3>Seminars</h3>
+        <p>Learn from experts</p>
+        <span class="cat-count" id="cc-seminars">Loading...</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">Get Started in <span class="accent">3 Steps</span></h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h3><i class="bi bi-person-plus" style="color:var(--accent);margin-right:8px"></i>Create Account</h3>
+        <p>Sign up for free in seconds. No credit card, no commitment — just your email and you're in.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h3><i class="bi bi-funnel" style="color:var(--cyan);margin-right:8px"></i>Filter & Discover</h3>
+        <p>Use smart filters to find exactly what you're looking for — by type, location, experience, or date.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h3><i class="bi bi-send-fill" style="color:var(--green);margin-right:8px"></i>Apply Directly</h3>
+        <p>Click any listing to see full details, then hit Apply Now to go straight to the official application.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Ready to Find Your <span style="background:linear-gradient(90deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Dream Opportunity?</span></h2>
+      <p>Join thousands of developers already using Syntax Syndicate to grow their careers.</p>
+      <div class="btn-group">
+        <a href="opportunities.html" class="btn btn-primary btn-lg"><i class="bi bi-search"></i> Browse Opportunities</a>
+        <a href="signup.html" class="btn btn-outline btn-lg"><i class="bi bi-person-plus"></i> Create Free Account</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+          Syntax Syndicate
+        </div>
+        <p class="footer-desc">Your gateway to the best tech careers, internships, hackathons, and events. Built for developers, by developers.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Opportunities</h4>
+        <ul>
+          <li><a href="opportunities.html?cat=jobs">Jobs</a></li>
+          <li><a href="opportunities.html?cat=internships">Internships</a></li>
+          <li><a href="opportunities.html?cat=hackathons">Hackathons</a></li>
+          <li><a href="opportunities.html?cat=techEvents">Tech Events</a></li>
+          <li><a href="opportunities.html?cat=seminars">Seminars</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Syntax Syndicate. All rights reserved.</p>
+      <p>Made with <i class="bi bi-lightning-charge-fill" style="color:var(--accent)"></i> for the dev community</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container"></div>
+
+<script type="module">
+  import { initNavbarAuth } from './js/auth.js';
+  import { db, COLLECTIONS } from './js/firebase.js';
+  import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  initNavbarAuth();
+
+  // Navbar scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+  // Mobile menu
+  document.getElementById('nav-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('open');
+  });
+
+  // Load stats & category counts
+  async function loadStats() {
+    const cols = [
+      { col: COLLECTIONS.JOBS, heroId: 'stat-jobs', catId: 'cc-jobs' },
+      { col: COLLECTIONS.INTERNSHIPS, heroId: 'stat-internships', catId: 'cc-internships' },
+      { col: COLLECTIONS.HACKATHONS, heroId: null, catId: 'cc-hackathons' },
+      { col: COLLECTIONS.TECH_EVENTS, heroId: null, catId: 'cc-techevents' },
+      { col: COLLECTIONS.SEMINARS, heroId: null, catId: 'cc-seminars' },
+    ];
+    let events = 0;
+    for (const { col, heroId, catId } of cols) {
+      try {
+        const snap = await getDocs(collection(db, col));
+        const n = snap.size;
+        if (heroId) document.getElementById(heroId).textContent = n;
+        if (catId) document.getElementById(catId).textContent = `${n} listed`;
+        if (!heroId) events += n;
+      } catch { 
+        if (catId) document.getElementById(catId).textContent = '0 listed';
+      }
+    }
+    document.getElementById('stat-events').textContent = events;
+  }
+  loadStats();
+</script>
+</body>
+</html>

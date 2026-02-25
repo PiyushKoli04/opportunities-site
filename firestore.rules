@@ -1,0 +1,51 @@
+// =============================================
+// FIRESTORE SECURITY RULES
+// Project: internship-site
+// =============================================
+// STEP 1: Use the OPEN rules below first to test
+// STEP 2: Once confirmed working, switch to SECURE rules
+
+// ✅ OPEN RULES (use during setup/testing)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+// -------------------------------------------------
+// 🔒 SECURE RULES (switch to these after testing)
+// -------------------------------------------------
+// rules_version = '2';
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//
+//     function isAuthenticated() {
+//       return request.auth != null;
+//     }
+//
+//     function isAdmin() {
+//       return isAuthenticated() &&
+//         exists(/databases/$(database)/documents/ss_users/$(request.auth.uid)) &&
+//         get(/databases/$(database)/documents/ss_users/$(request.auth.uid)).data.role == 'admin';
+//     }
+//
+//     match /ss_users/{userId} {
+//       allow read: if isAuthenticated() && request.auth.uid == userId;
+//       allow create: if isAuthenticated() && request.auth.uid == userId;
+//       allow update: if isAdmin();
+//       allow delete: if false;
+//     }
+//
+//     match /ss_jobs/{docId} { allow read: if true; allow write: if isAdmin(); }
+//     match /ss_internships/{docId} { allow read: if true; allow write: if isAdmin(); }
+//     match /ss_hackathons/{docId} { allow read: if true; allow write: if isAdmin(); }
+//     match /ss_techEvents/{docId} { allow read: if true; allow write: if isAdmin(); }
+//     match /ss_seminars/{docId} { allow read: if true; allow write: if isAdmin(); }
+//     match /ss_ads/{docId} { allow read: if true; allow write: if isAdmin(); }
+//
+//     match /{document=**} { allow read, write: if false; }
+//   }
+// }
