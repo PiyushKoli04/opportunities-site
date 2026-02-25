@@ -6,6 +6,211 @@
   <title>Opportunities — Syntax Syndicate</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    /* ── Collapsible Filter Bar ── */
+    .filter-bar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 64px;
+      z-index: 100;
+    }
+
+    /* Single slim toggle row */
+    .filter-toggle-row {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 9px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .filter-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font);
+    }
+    .filter-toggle-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+      border-color: var(--border2);
+    }
+    .filter-toggle-btn.active {
+      background: rgba(124,111,255,0.1);
+      border-color: rgba(124,111,255,0.3);
+      color: var(--accent);
+    }
+    .filter-toggle-btn .chevron {
+      transition: transform 0.25s ease;
+      font-size: 11px;
+    }
+    .filter-toggle-btn.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Active filters badge */
+    .filter-active-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 17px; height: 17px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .filter-active-badge.show {
+      display: inline-flex;
+    }
+
+    .filter-result-count {
+      font-size: 12px;
+      color: var(--text3);
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    /* Collapsible panel — search + all 3 filters */
+    .filter-panel {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+    .filter-panel.open {
+      max-height: 300px;
+      opacity: 1;
+    }
+    .filter-panel-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 4px 28px 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Search inside panel */
+    .filter-search-box {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .filter-search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .filter-search-box input {
+      width: 100%;
+      padding: 9px 12px 9px 34px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: var(--font);
+    }
+    .filter-search-box input::placeholder { color: var(--text3); }
+    .filter-search-box input:focus {
+      border-color: rgba(124,111,255,0.5);
+      background: rgba(124,111,255,0.04);
+      box-shadow: 0 0 0 3px rgba(124,111,255,0.08);
+    }
+
+    @media (max-width: 768px) {
+      .filter-toggle-row { padding: 9px 16px; }
+      .filter-panel-inner {
+        padding: 8px 16px 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .filter-panel.open { max-height: 500px; }
+      .filter-search-box { min-width: unset; }
+      .filter-select { width: 100%; }
+    }
+    /* ===========================
+   MOBILE AUTH CONTAINER FIX
+=========================== */
+
+/* Container: stack vertically, full width */
+.mobile-nav-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+
+/* All buttons inside go full width */
+.mobile-nav-auth .btn {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Mobile user info row (avatar + name + role) */
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 8px;
+  width: 100%;
+}
+
+.mobile-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--pink, #ff6b8a));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.mobile-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.mobile-user-role {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+  </style>
 </head>
 <body>
 
@@ -126,49 +331,65 @@
 
   <!-- FILTER BAR -->
   <div class="filter-bar">
-    <div class="filter-bar-inner">
-      <div class="search-box">
-        <i class="bi bi-search"></i>
-        <input type="text" id="search-input" placeholder="Search by title, company, keyword...">
-      </div>
-      <select class="filter-select" id="loc-filter">
-        <option value="">All Locations</option>
-        <option value="remote">Remote</option>
-        <option value="bangalore">Bangalore</option>
-        <option value="mumbai">Mumbai</option>
-        <option value="delhi">Delhi</option>
-        <option value="hyderabad">Hyderabad</option>
-        <option value="pune">Pune</option>
-        <option value="online">Online</option>
-      </select>
-      <select class="filter-select" id="exp-filter">
-        <option value="">All Levels</option>
-        <option value="Entry Level">Entry Level</option>
-        <option value="Junior">Junior</option>
-        <option value="Mid Level">Mid Level</option>
-        <option value="Senior">Senior</option>
-        <option value="Lead">Lead</option>
-      </select>
-      <select class="filter-select" id="time-filter">
-        <option value="all">All Time</option>
-        <option value="week">This Week</option>
-        <option value="month">This Month</option>
-      </select>
-      <div class="filter-bar-right">
-        <span class="result-count" id="filter-count"></span>
+
+    <!-- Slim toggle row — just one button + result count -->
+    <div class="filter-toggle-row">
+      <button class="filter-toggle-btn" id="filter-toggle-btn">
+        <i class="bi bi-sliders"></i>
+        Search & Filters
+        <span class="filter-active-badge" id="filter-badge">0</span>
+        <i class="bi bi-chevron-down chevron"></i>
+      </button>
+      <span class="filter-result-count" id="filter-count"></span>
+    </div>
+
+    <!-- Collapsible panel: search + all 3 dropdowns + clear -->
+    <div class="filter-panel" id="filter-panel">
+      <div class="filter-panel-inner">
+
+        <div class="filter-search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" id="search-input" placeholder="Search by title, company, keyword...">
+        </div>
+
+        <select class="filter-select" id="loc-filter">
+          <option value="">All Locations</option>
+          <option value="remote">Remote</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="delhi">Delhi</option>
+          <option value="hyderabad">Hyderabad</option>
+          <option value="pune">Pune</option>
+          <option value="online">Online</option>
+        </select>
+
+        <select class="filter-select" id="exp-filter">
+          <option value="">All Levels</option>
+          <option value="Entry Level">Entry Level</option>
+          <option value="Junior">Junior</option>
+          <option value="Mid Level">Mid Level</option>
+          <option value="Senior">Senior</option>
+          <option value="Lead">Lead</option>
+        </select>
+
+        <select class="filter-select" id="time-filter">
+          <option value="all">All Time</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+
         <button class="btn btn-secondary btn-sm" id="clear-filters">
-          <i class="bi bi-x-circle"></i> Clear
+          <i class="bi bi-x-circle"></i> Clear All
         </button>
+
       </div>
     </div>
+
   </div>
 
   <!-- CONTENT -->
   <div class="opp-content">
-    <!-- Top Ad Banner -->
     <div id="ad-banner" class="ad-banner hidden"></div>
-
-    <!-- Cards Grid -->
     <div class="cards-grid" id="cards-grid"></div>
   </div>
 </div>
@@ -177,7 +398,7 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-bottom">
-      <p>© 2026 Syntax Syndicate. All rights reserved.</p>
+      <p>© 2025 Syntax Syndicate. All rights reserved.</p>
       <a href="index.html" style="font-size:12px;color:var(--text3)">← Back to Home</a>
     </div>
   </div>
@@ -197,24 +418,47 @@
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
   document.getElementById('nav-toggle')?.addEventListener('click', () => document.getElementById('mobile-menu')?.classList.toggle('open'));
 
+  // ── Toggle filter panel ──
+  const toggleBtn = document.getElementById('filter-toggle-btn');
+  const filterPanel = document.getElementById('filter-panel');
+  const filterBadge = document.getElementById('filter-badge');
+
+  toggleBtn.addEventListener('click', () => {
+    const isOpen = filterPanel.classList.toggle('open');
+    toggleBtn.classList.toggle('open', isOpen);
+    toggleBtn.classList.toggle('active', isOpen);
+  });
+
+  function updateBadge() {
+    const count = [
+      document.getElementById('search-input').value.trim(),
+      document.getElementById('loc-filter').value,
+      document.getElementById('exp-filter').value,
+      document.getElementById('time-filter').value !== 'all' ? '1' : ''
+    ].filter(Boolean).length;
+
+    filterBadge.textContent = count;
+    filterBadge.classList.toggle('show', count > 0);
+    // Keep button highlighted if filters active even when panel closed
+    if (!filterPanel.classList.contains('open')) {
+      toggleBtn.classList.toggle('active', count > 0);
+    }
+  }
+
   // State
   let allPosts = [], filteredPosts = [], topAds = [], inlineAds = [];
   const state = { cat: 'all', search: '', location: '', experience: '', time: 'all' };
 
-  // DOM
   const grid = document.getElementById('cards-grid');
   const adBanner = document.getElementById('ad-banner');
 
-  // Init
   async function init() {
     showSkeletons();
     const params = new URLSearchParams(location.search);
     const cat = params.get('cat');
     if (cat) {
       state.cat = cat;
-      document.querySelectorAll('.opp-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.cat === cat);
-      });
+      document.querySelectorAll('.opp-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
     }
     await Promise.all([fetchAll(), fetchAds()]);
     renderTopAd();
@@ -235,7 +479,6 @@
   async function fetchCol(col) {
     try {
       const snap = await getDocs(query(collection(db, col), orderBy('postedAt', 'desc')));
-      // Strip ss_ prefix for display
       const displayCol = col.replace('ss_', '');
       return snap.docs.map(d => ({ id: d.id, _col: displayCol, _colRaw: col, ...d.data() }));
     } catch { return []; }
@@ -266,7 +509,9 @@
     adBanner.onclick = () => window.open(ad.redirectLink, '_blank');
     adBanner.innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;flex:1">
-        ${ad.imagePath ? `<img src="${ad.imagePath}" style="width:52px;height:52px;border-radius:9px;object-fit:cover" alt="${ad.title}">` : `<div style="width:52px;height:52px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center"><i class="bi bi-megaphone-fill" style="color:var(--accent);font-size:20px"></i></div>`}
+        ${ad.imagePath
+          ? `<img src="${ad.imagePath}" style="width:52px;height:52px;border-radius:9px;object-fit:cover" alt="${ad.title}">`
+          : `<div style="width:52px;height:52px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center"><i class="bi bi-megaphone-fill" style="color:var(--accent);font-size:20px"></i></div>`}
         <div>
           <div style="font-family:var(--font-display);font-weight:600;margin-bottom:3px">${ad.title}</div>
           <div style="font-size:12px;color:var(--text3)">Sponsored · Click to learn more</div>
@@ -300,6 +545,7 @@
     renderCards();
     document.getElementById('result-count').textContent = `${filteredPosts.length} result${filteredPosts.length !== 1 ? 's' : ''}`;
     document.getElementById('filter-count').textContent = `${filteredPosts.length} found`;
+    updateBadge();
   }
 
   function renderCards() {
@@ -317,11 +563,11 @@
   }
 
   const CAT_CONFIG = {
-    jobs: { icon: 'bi-briefcase-fill', label: 'Job', badge: 'badge-jobs', emoji: '🏢' },
-    internships: { icon: 'bi-mortarboard-fill', label: 'Internship', badge: 'badge-internships', emoji: '📚' },
-    hackathons: { icon: 'bi-lightning-fill', label: 'Hackathon', badge: 'badge-hackathons', emoji: '⚡' },
-    techEvents: { icon: 'bi-cpu-fill', label: 'Tech Event', badge: 'badge-techEvents', emoji: '💡' },
-    seminars: { icon: 'bi-mic-fill', label: 'Seminar', badge: 'badge-seminars', emoji: '🎤' },
+    jobs:        { icon: 'bi-briefcase-fill',  label: 'Job',        badge: 'badge-jobs',        emoji: '🏢' },
+    internships: { icon: 'bi-mortarboard-fill', label: 'Internship', badge: 'badge-internships',  emoji: '📚' },
+    hackathons:  { icon: 'bi-lightning-fill',   label: 'Hackathon',  badge: 'badge-hackathons',   emoji: '⚡' },
+    techEvents:  { icon: 'bi-cpu-fill',         label: 'Tech Event', badge: 'badge-techEvents',   emoji: '💡' },
+    seminars:    { icon: 'bi-mic-fill',         label: 'Seminar',    badge: 'badge-seminars',     emoji: '🎤' },
   };
 
   function makeCard(post) {
@@ -400,7 +646,6 @@
     tab.classList.add('active');
     state.cat = tab.dataset.cat;
     applyFilters();
-    // Update URL without reload
     const url = new URL(location.href);
     if (state.cat === 'all') url.searchParams.delete('cat');
     else url.searchParams.set('cat', state.cat);
@@ -412,6 +657,7 @@
   document.getElementById('loc-filter').addEventListener('change', e => { state.location = e.target.value; applyFilters(); });
   document.getElementById('exp-filter').addEventListener('change', e => { state.experience = e.target.value; applyFilters(); });
   document.getElementById('time-filter').addEventListener('change', e => { state.time = e.target.value; applyFilters(); });
+
   document.getElementById('clear-filters').addEventListener('click', () => {
     state.search = ''; state.location = ''; state.experience = ''; state.time = 'all';
     document.getElementById('search-input').value = '';
